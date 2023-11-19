@@ -1,3 +1,4 @@
+import { keyDown, keyUp } from './components/moving.js'
 import { testing } from './components/test.js'
 testing()
 
@@ -40,7 +41,7 @@ function drawBall() {
 }
 
 // create paddle properties
-const paddle = {
+export const paddle = {
     x: canvas.width / 2 - 40,
     y: canvas.height - 20,
     w: 80,
@@ -234,25 +235,6 @@ function update() {
 
 update()
 
-// keydown event
-function keyDown(e) {
-    if (e.key === 'Right' || e.key === 'ArrowRight') {
-        paddle.dx = paddle.speed;
-    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-        paddle.dx = -paddle.speed;
-    }
-}
-
-// keyup event
-function keyUp(e) {
-    if (e.key === 'Right' ||
-        e.key === 'ArrowRight' ||
-        e.key === 'Left' ||
-        e.key === 'ArrowLeft') {
-        paddle.dx = 0
-    }
-
-}
 
 // keyboard event handlers
 document.addEventListener('keydown', keyDown)
