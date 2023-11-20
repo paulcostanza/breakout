@@ -18,6 +18,9 @@ const ctx = canvas.getContext('2d')
 // Score board
 let score = 0
 
+// Total lives
+let lives = 3
+
 // Bricks
 const brickRowCount = 9
 const brickColumnCount = 8
@@ -87,6 +90,12 @@ function drawPaddle() {
 function drawScore() {
     ctx.font = '20px Arial'
     ctx.fillText(`Score: ${score}`, canvas.width - 100, 30)
+}
+
+// draw lives onto canvas
+function drawLives() {
+    ctx.font = '20px Arial'
+    ctx.fillText(`Lives: ${lives}`, 30, 30)
 }
 
 // draw bricks onto the canvas
@@ -191,8 +200,14 @@ function moveBall() {
 
     // When we hit the bottom wall
     if (ball.y + ball.size > canvas.height) {
-        showAllBricks()
-        score = 0
+
+        if (lives > 0) {
+            lives--;
+        } else {
+            showAllBricks()
+            score = 0
+            lives = 3
+        }
     }
 }
 
@@ -220,6 +235,7 @@ function draw() {
     drawBall()
     drawPaddle()
     drawScore()
+    drawLives()
     drawBricks()
 }
 

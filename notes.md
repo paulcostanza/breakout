@@ -15,6 +15,7 @@ However, if I need to use a local server, these are the steps:
 - add explosion when the ball hits the bottom of the screen
 - change where the ball starts
 - a nice fade in for balls to reappear
+- add a high score menu that saves into local memory
 
 
 ## power-ups to add
