@@ -61,21 +61,37 @@ canvas {
     left: 30px;
 }
 
-.rules {
+.options-btn {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+}
+
+.rules,
+.options {
     position: absolute;
     top: 0;
-    left: 0;
     background: #333;
     color: #fff;
     min-height: 100vh;
     width: 400px;
     padding: 20px;
     line-height: 1.5;
-    transform: translateX(-400px);
     transition: transform 1s ease-in-out;
     opacity: 0.97;
 }
 
-.rules.show {
+.rules {
+    left: 0;
+    transform: translateX(-400px);
+}
+
+.options {
+    right: 0;
+    transform: translateX(400px)
+}
+
+.rules.show,
+.options.show {
     transform: translateX(0);
 }

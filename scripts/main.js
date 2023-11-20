@@ -4,7 +4,9 @@ testing()
 
 // buttons
 const rulesBtn = document.getElementById('rules-btn')
-const closeBtn = document.getElementById('close-btn')
+const optionsBtn = document.getElementById('options-btn')
+const closeRulesBtn = document.getElementById('close-btn')
+const closeOptionsBtn = document.getElementById('close-options-btn')
 
 // rules menu
 const rules = document.getElementById('rules')
@@ -242,6 +244,6 @@ document.addEventListener('keyup', keyUp)
 
 // rules and close event handlers
 rulesBtn.addEventListener('click', () => rules.classList.add('show'))
-closeBtn.addEventListener('click', () => rules.classList.remove('show'))
-
-
+optionsBtn.addEventListener('click', () => options.classList.add('show'))
+closeRulesBtn.addEventListener('click', () => rules.classList.remove('show'))
+closeOptionsBtn.addEventListener('click', () => options.classList.remove('show'))
