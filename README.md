@@ -1,4 +1,5 @@
 # breakout
 
-Next step
-- break up javascript code into modules to help organize everything because it is very messy
+**To Do list**
+- add lives, three hearts
+- add difficulty (easy or hard mode) to the options menu. 

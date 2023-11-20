@@ -10,9 +10,11 @@ However, if I need to use a local server, these are the steps:
     - easy or hard: how fast the ball moves, size of the paddle
     - if you want the paddle to be continuous (go past the right side and pop out the left, and reverse)
     - Change color
+    - switch between score and timer (Melinda's idea)
 - make the ball bounce in a different direction depending on which side of the paddle it hits. 
 - add explosion when the ball hits the bottom of the screen
 - change where the ball starts
+- a nice fade in for balls to reappear
 
 
 ## power-ups to add
