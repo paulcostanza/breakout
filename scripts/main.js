@@ -7,9 +7,14 @@ const rulesBtn = document.getElementById('rules-btn')
 const optionsBtn = document.getElementById('options-btn')
 const closeRulesBtn = document.getElementById('close-btn')
 const closeOptionsBtn = document.getElementById('close-options-btn')
+const highScoreBtn = document.getElementById('high-score-btn')
+const closeHighScoreBtn = document.getElementById('close-high-score-btn')
 
 // rules menu
 const rules = document.getElementById('rules')
+
+// high score menu
+const highScore = document.querySelector('.high-score')
 
 // Canvas
 const canvas = document.getElementById('canvas')
@@ -260,6 +265,10 @@ document.addEventListener('keyup', keyUp)
 
 // rules and close event handlers
 rulesBtn.addEventListener('click', () => rules.classList.add('show'))
-optionsBtn.addEventListener('click', () => options.classList.add('show'))
 closeRulesBtn.addEventListener('click', () => rules.classList.remove('show'))
+
+optionsBtn.addEventListener('click', () => options.classList.add('show'))
 closeOptionsBtn.addEventListener('click', () => options.classList.remove('show'))
+
+highScoreBtn.addEventListener('click', () => highScore.classList.add('show'))
+closeHighScoreBtn.addEventListener('click', () => highScore.classList.remove('show'))

@@ -5,7 +5,6 @@ However, if I need to use a local server, these are the steps:
 2. inside this directory, type: npx http-server
 
 ## features to add
-- lives, start with three
 - options menu, on right side
     - easy or hard: how fast the ball moves, size of the paddle
     - if you want the paddle to be continuous (go past the right side and pop out the left, and reverse)
@@ -28,7 +27,13 @@ Not sure if I should make the power-ups instant turns or save them on the side. 
 - add a life
 - turn ball into a bomb, when it hits a brick it destroies the adjacent bricks (for one or two turns)
 
+## power-downs to add
+Items you do not want to collect
+- poison brick, speeds up the ball temporarily
+- ghost balls, shoots out ghost balls to lose track of the really ball
+
 
 ## sound
 - add bill and ted '69 dude!' when you hit that score
 - add explosion sound after adding ball explosion animation
+- add a 'boin' sound when the ball hits the bottom of the screen

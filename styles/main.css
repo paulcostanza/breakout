@@ -34,6 +34,7 @@ canvas {
     border-radius: 5px;
 }
 
+
 .btn {
     cursor: pointer;
     border: 0;
@@ -63,12 +64,24 @@ canvas {
 
 .options-btn {
     position: absolute;
-    top: 30px;
-    right: 30px;
+    top: 90px;
+    left: 30px;
+}
+
+.high-score-btn {
+    position: absolute;
+    top: 150px;
+    left: 30px;
+}
+
+/* Selects buttons that do not close menu */
+.btn:not(.menu-item .btn) {
+    width: 200px;
 }
 
 .rules,
-.options {
+.options,
+.high-score {
     position: absolute;
     top: 0;
     background: #333;
@@ -79,19 +92,24 @@ canvas {
     line-height: 1.5;
     transition: transform 1s ease-in-out;
     opacity: 0.97;
+    z-index: 5;
+    /* z-index prevents buttons from overlapping screen */
 }
 
-.rules {
+.rules,
+.options,
+.high-score {
     left: 0;
     transform: translateX(-400px);
 }
 
-.options {
+/* .options {
     right: 0;
     transform: translateX(400px)
-}
+} */
 
 .rules.show,
-.options.show {
+.options.show,
+.high-score.show {
     transform: translateX(0);
 }
