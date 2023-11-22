@@ -8,3 +8,7 @@
 - move the options menu to the left side?
 - add a pause button
 
+#### Nov 22nd
+1. Create menu.js to store menu options. So far I have moved the *rules* and *user name* options. My main.js is starting to get way too messy :worried:
+
+2. Added a feature where users can **enter name**. Right now there name will appear right above the game board. In the future, I hope to implement a high score feature that is saved in local storage. 

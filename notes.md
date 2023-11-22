@@ -8,7 +8,7 @@ However, if I need to use a local server, these are the steps:
 - options menu:
     - easy or hard: how fast the ball moves, size of the paddle
     - if you want the paddle to be continuous (go past the right side and pop out the left, and reverse)
-    - Change color
+    - Change board color
     - switch between score and timer (Melinda's idea)
     - toggle music
     - toggle sound effects

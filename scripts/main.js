@@ -1,27 +1,23 @@
 import { keyDown, keyUp } from './components/moving.js'
 import { testing } from './components/test.js'
+import { toggleNameMenu, toggleRulesMenu, getUserName } from './components/menu.js'
+
+// functions that are imported
 testing()
+toggleRulesMenu()
+toggleNameMenu()
+
+let playerName = getUserName()
+// addPlayerToScoreBoard(playerName)
 
 // buttons
-const rulesBtn = document.getElementById('rules-btn')
 const optionsBtn = document.getElementById('options-btn')
-const closeRulesBtn = document.getElementById('close-btn')
 const closeOptionsBtn = document.getElementById('close-options-btn')
 const highScoreBtn = document.getElementById('high-score-btn')
 const closeHighScoreBtn = document.getElementById('close-high-score-btn')
-const nameBtn = document.getElementById('name-btn')
-const submitBtn = document.getElementById('close-name-btn')
-const userName = document.getElementById('user-name')
-
-
-// rules menu
-const rules = document.getElementById('rules')
 
 // high score menu
 const highScore = document.querySelector('.high-score')
-
-// name menu
-const name = document.querySelector('.name')
 
 // Canvas
 const canvas = document.getElementById('canvas')
@@ -265,62 +261,14 @@ function update() {
 
 update()
 
-// Get user name
-function getUserName() {
-    submitBtn.addEventListener('click', () => {
-        const h1 = document.querySelector('h1')
-        let name = userName.value
-        name = name.trim()
-
-        let nameForScoreBoard = name
-        name = name.toUpperCase()
-
-        let newName = name.split("")
-        name = ''
-
-        for (let i = 0; i < newName.length; i++) {
-            if (newName[i] === " ") {
-                name += "| "
-            } else {
-                name += newName[i] + " "
-            }
-        }
-
-        // if user submits nothing
-        if (name === '')
-            name = 'B R E A K O U T'
-
-        h1.innerHTML = name
-
-        return nameForScoreBoard
-    })
-}
-
-// function addPlayerToScoreBoard() {
-
-//     const players = []
-//     const name = JSON.parse(localStorage.getItem('name'))
-
-//     players.push({ name, score })
-// }
-
-let playerName = getUserName()
-addPlayerToScoreBoard(playerName)
-
-
 // keyboard event handlers
 document.addEventListener('keydown', keyDown)
 document.addEventListener('keyup', keyUp)
 
-// rules and close event handlers
-rulesBtn.addEventListener('click', () => rules.classList.add('show'))
-closeRulesBtn.addEventListener('click', () => rules.classList.remove('show'))
-
+// menu and close event handlers
 optionsBtn.addEventListener('click', () => options.classList.add('show'))
 closeOptionsBtn.addEventListener('click', () => options.classList.remove('show'))
 
 highScoreBtn.addEventListener('click', () => highScore.classList.add('show'))
 closeHighScoreBtn.addEventListener('click', () => highScore.classList.remove('show'))
 
-nameBtn.addEventListener('click', () => name.classList.add('show'))
-submitBtn.addEventListener('click', () => name.classList.remove('show'))
