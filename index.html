@@ -17,6 +17,18 @@
     <h1>B R E A K O U T</h1>
 
     <div class="main-menu">
+        <!-- ENTER NAME -->
+        <button id="name-btn" class="btn name-btn">User Name</button>
+        <div id="name" class="name menu-item">
+            <h2>For bragging rights over in the high score menu.</h2>
+            <div class="submit-area">
+                <label for="name">Name</label>
+                <input type="text" id="user-name" placeholder="Real or alias..."></input>
+            </div>
+
+            <button id="close-name-btn" class="btn">Submit</button>
+        </div>
+
         <!-- RULES -->
         <button id="rules-btn" class="btn rules-btn">Rules</button>
         <div id="rules" class="rules menu-item">
@@ -40,28 +52,34 @@
         <!-- High Score -->
         <button id="high-score-btn" class="btn high-score-btn">High Score</button>
         <div id="high-score" class="high-score menu-item">
-            <!-- Position   Name    Score -->
+            <!-- Position   Name    Score   Date -->
             <table>
                 <thead>
-                    <th>Position</th>
-                    <th>Name</th>
-                    <th>Score</th>
+                    <tr>
+                        <th>Position</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>1st</td>
                         <td>Paul</td>
                         <td>69</td>
+                        <td>2/15/2023</td>
                     </tr>
                     <tr>
                         <td>2nd</td>
                         <td>Ryan</td>
                         <td>42</td>
+                        <td>11/20/2021</td>
                     </tr>
                     <tr>
                         <td>3rd</td>
                         <td>Melinda</td>
                         <td>12</td>
+                        <td>11/4/2023</td>
                     </tr>
                 </tbody>
             </table>
@@ -72,6 +90,8 @@
         </div>
 
     </div>
+
+
 
     <!-- CANVAS -->
     <canvas id="canvas" width="800" height="600"></canvas>

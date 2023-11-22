@@ -56,21 +56,27 @@ canvas {
     transform: scale(0.98);
 }
 
-.rules-btn {
+.name-btn {
     position: absolute;
     top: 30px;
     left: 30px;
 }
 
-.options-btn {
+.rules-btn {
     position: absolute;
     top: 90px;
     left: 30px;
 }
 
-.high-score-btn {
+.options-btn {
     position: absolute;
     top: 150px;
+    left: 30px;
+}
+
+.high-score-btn {
+    position: absolute;
+    top: 210px;
     left: 30px;
 }
 
@@ -81,7 +87,8 @@ canvas {
 
 .rules,
 .options,
-.high-score {
+.high-score,
+.name {
     position: absolute;
     top: 0;
     background: #333;
@@ -98,18 +105,36 @@ canvas {
 
 .rules,
 .options,
-.high-score {
+.high-score,
+.name {
     left: 0;
     transform: translateX(-400px);
 }
 
-/* .options {
-    right: 0;
-    transform: translateX(400px)
-} */
 
 .rules.show,
 .options.show,
-.high-score.show {
+.high-score.show,
+.name.show {
     transform: translateX(0);
+}
+
+th,
+td {
+    text-align: left;
+    width: 25%;
+}
+
+label {
+    display: block;
+    margin: 0 auto;
+}
+
+.submit-area input {
+    border-radius: 9px;
+    display: block;
+    font-size: 16px;
+    padding: 12px;
+    width: 100%;
+    margin: 10px 0;
 }
