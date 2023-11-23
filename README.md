@@ -1,12 +1,15 @@
 # breakout
 
 **To Do list**
-- add a high score menu that saves into local memory
+- change where the ball starts - I want user to shoot it from the paddle
 - change bounce angle off of the paddle (maybe even speed?)
 - press space bar to shoot ball from (hovering) center of the paddle
 - add difficulty (easy or hard mode) to the options menu. 
-- move the options menu to the left side?
 - add a pause button
+- edit user names to lowercase in the high score menu
+
+#### Nov 23rd
+Added a high score menu that saves user name and score in local storage. 
 
 #### Nov 22nd
 1. Create menu.js to store menu options. So far I have moved the *rules* and *user name* options. My main.js is starting to get way too messy :worried:

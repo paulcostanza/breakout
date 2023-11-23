@@ -1,14 +1,13 @@
 import { keyDown, keyUp } from './components/moving.js'
 import { testing } from './components/test.js'
-import { toggleNameMenu, toggleRulesMenu, getUserName } from './components/menu.js'
+import { toggleNameMenu, toggleRulesMenu, getUserName, addPlayerToScoreBoard, highScoreName, getUserInfo } from './components/menu.js'
 
 // functions that are imported
 testing()
 toggleRulesMenu()
 toggleNameMenu()
-
-let playerName = getUserName()
-// addPlayerToScoreBoard(playerName)
+getUserName()
+getUserInfo()
 
 // buttons
 const optionsBtn = document.getElementById('options-btn')
@@ -212,9 +211,11 @@ function moveBall() {
         if (lives > 0) {
             lives--;
         } else {
+            addPlayerToScoreBoard(highScoreName, score)
             showAllBricks()
             score = 0
             lives = 3
+            getUserInfo()
         }
     }
 }
@@ -258,14 +259,13 @@ function update() {
     requestAnimationFrame(update)
 }
 
-
 update()
 
 // keyboard event handlers
 document.addEventListener('keydown', keyDown)
 document.addEventListener('keyup', keyUp)
 
-// menu and close event handlers
+// options and high score menu open/close event handlers
 optionsBtn.addEventListener('click', () => options.classList.add('show'))
 closeOptionsBtn.addEventListener('click', () => options.classList.remove('show'))
 

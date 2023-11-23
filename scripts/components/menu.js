@@ -11,9 +11,11 @@ export function toggleRulesMenu() {
     closeRulesBtn.addEventListener('click', () => rules.classList.remove('show'))
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // User name menu option
 const nameBtn = document.getElementById('name-btn')
 const submitBtn = document.getElementById('close-name-btn')
+export let highScoreName = ''
 
 // getting the user name
 const userName = document.getElementById('user-name')
@@ -33,7 +35,7 @@ export function getUserName() {
         name = name.trim()
 
         // edits name for gameboard
-        let nameForScoreBoard = name
+        highScoreName = name
         name = name.toUpperCase()
 
         let newName = name.split("")
@@ -51,10 +53,8 @@ export function getUserName() {
         if (name === '')
             name = 'B R E A K O U T'
 
+        // Changes 'breakout' to player's name
         h1.innerHTML = name
-
-        // returns the name the user submited before it was edited
-        return nameForScoreBoard
     })
 }
 
@@ -63,13 +63,63 @@ export function toggleNameMenu() {
     submitBtn.addEventListener('click', () => name.classList.remove('show'))
 }
 
+export function addPlayerToScoreBoard(name, score) {
 
-// local storage
-// function addPlayerToScoreBoard() {
+    // adds name to local storage
+    if (localStorage.getItem(name) === null &&
+        name !== '' &&
+        name !== undefined) {
+        localStorage.setItem(name, score)
+    } else if (parseInt(localStorage.getItem(name)) < score) {
+        localStorage.setItem(name, score)
+    }
+}
+
+export function getUserInfo() {
+    const userInfo = []
+    const place = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th']
+
+    // taking data from localStorage and adding it to this program
+    for (const key in localStorage) {
+        if (localStorage.hasOwnProperty(key)) {
+            let value = localStorage.getItem(key)
+
+            userInfo.push({ name: `${key}`, score: parseInt(value) })
+        }
+    }
+
+    // selection sort algorithm to organize the data and rank each user by highest score
+    let max;
+    for (let i = 0; i < userInfo.length - 1; i++) {
+        max = i;
+        for (let j = i + 1; j < userInfo.length; j++) {
+            if (userInfo[j].score > userInfo[max].score)
+                max = j;
+        }
+
+        let temp;
+        temp = userInfo[max];
+        userInfo[max] = userInfo[i];
+        userInfo[i] = temp;
+    }
+
+    const tableBody = document.getElementById('table-body')
+    tableBody.innerHTML = ''
+
+    // adding the info to the High Score menu
+    for (let i = 0; i < userInfo.length; i++) {
+        const tr = document.createElement('tr')
+        const td = document.createElement('td')
 
 
+        let addThis = `<tr>
+        <td>${place[i]}</td>
+        <td>${userInfo[i].name}</td>
+        <td>${userInfo[i].score}</td>
+        <td></td>
+        </tr>`
 
-//     const name = JSON.parse(localStorage.getItem('name'))
 
-//     players.push({ name, score })
-// }
+        tableBody.innerHTML += addThis
+    }
+}
