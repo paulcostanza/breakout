@@ -32,11 +32,21 @@ let lives = 3
 const brickRowCount = 9
 const brickColumnCount = 8
 
+// create paddle properties
+export const paddle = {
+    x: canvas.width / 2 - 40,
+    y: canvas.height - 20,
+    w: 80,
+    h: 10,
+    speed: 8,
+    dx: 0
+}
+
 // create ball properties
 let howFast = 4
 const ball = {
-    x: canvas.width / 2,
-    y: canvas.height / 2,
+    x: paddle.x + paddle.w / 2, // canvas.width / 2,
+    y: paddle.y - 20, // canvas.height / 2,
     size: 10,
     speed: howFast,
     dx: howFast,
@@ -50,16 +60,6 @@ function drawBall() {
     ctx.fillStyle = '#0095dd';
     ctx.fill()
     ctx.closePath()
-}
-
-// create paddle properties
-export const paddle = {
-    x: canvas.width / 2 - 40,
-    y: canvas.height - 20,
-    w: 80,
-    h: 10,
-    speed: 8,
-    dx: 0
 }
 
 // create brick properties
@@ -226,6 +226,8 @@ function increaseScore() {
 
     if (score % (brickRowCount * brickColumnCount) === 0) {
         showAllBricks()
+        ball.x = paddle.x + paddle.w / 2
+        ball.y = paddle.y - 20
     }
 }
 

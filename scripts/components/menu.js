@@ -111,14 +111,12 @@ export function getUserInfo() {
         const tr = document.createElement('tr')
         const td = document.createElement('td')
 
-
         let addThis = `<tr>
         <td>${place[i]}</td>
         <td>${userInfo[i].name}</td>
         <td>${userInfo[i].score}</td>
         <td></td>
         </tr>`
-
 
         tableBody.innerHTML += addThis
     }

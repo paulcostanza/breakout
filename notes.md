@@ -5,7 +5,6 @@ However, if I need to use a local server, these are the steps:
 2. inside this directory, type: npx http-server
 
 ## features to add
-- change where the ball starts - I want user to shoot it from the paddle
 - options menu:
     - easy or hard: how fast the ball moves, size of the paddle
     - if you want the paddle to be continuous (go past the right side and pop out the left, and reverse)
@@ -21,6 +20,7 @@ However, if I need to use a local server, these are the steps:
 - add a high score menu that has a 'global high score' that saves to a database
 - add a password, but not until I am working on global storage
 - "For secure storage, especially when dealing with authentication-related data, server-side storage is recommended."
+- limit top 10 high school
 
 
 ## power-ups to add

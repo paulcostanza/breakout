@@ -1,12 +1,14 @@
 # breakout
 
 **To Do list**
-- change where the ball starts - I want user to shoot it from the paddle
 - change bounce angle off of the paddle (maybe even speed?)
 - press space bar to shoot ball from (hovering) center of the paddle
 - add difficulty (easy or hard mode) to the options menu. 
 - add a pause button
 - edit user names to lowercase in the high score menu
+
+#### Nove 24th
+Change where the ball starts. 
 
 #### Nov 23rd
 Added a high score menu that saves user name and score in local storage. 
