@@ -118,10 +118,27 @@ canvas {
     transform: translateX(0);
 }
 
+table {
+    /* border-collapse: gets rid of the space between td elements */
+    /* did this for a every-other background-color for tr for legiblity */
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
 th,
 td {
     text-align: left;
     width: 200px;
+    padding: 4px 0;
+    padding-left: 4px;
+}
+
+#table-body tr:nth-child(odd) {
+    background-color: #222;
+}
+
+td {
+    border: 0;
 }
 
 label {

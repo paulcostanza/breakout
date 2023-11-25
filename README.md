@@ -3,8 +3,9 @@
 **To Do list**
 - change bounce angle off of the paddle (maybe even speed?)
 - press space bar to shoot ball from (hovering) center of the paddle
-- add difficulty (easy or hard mode) to the options menu. 
+- figure out how to add different levels
 - add a pause button
+- add difficulty (easy or hard mode) to the options menu. 
 - edit user names to lowercase in the high score menu
 
 #### Nove 24th
