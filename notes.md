@@ -20,7 +20,11 @@ However, if I need to use a local server, these are the steps:
 - add a high score menu that has a 'global high score' that saves to a database
 - add a password, but not until I am working on global storage
 - "For secure storage, especially when dealing with authentication-related data, server-side storage is recommended."
-- limit top 10 high school
+- limit top 10 high score
+- under user name menu, auto highlight and be able to press enter 
+- another cool color: brickColor = '#9324ab'
+- add a place to send a comment/question/consern/problem. Would Like to have it so it sends an annoyomus email to me. 
+
 
 
 ## power-ups to add

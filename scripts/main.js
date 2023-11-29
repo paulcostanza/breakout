@@ -26,7 +26,7 @@ const ctx = canvas.getContext('2d')
 let score = 0
 
 // Total lives
-let lives = 3
+let lives = 500 // orignial: 3
 
 // Bricks
 const brickRowCount = 9
@@ -44,13 +44,14 @@ export const paddle = {
 
 // create ball properties
 let howFast = 4
+let r = 5;
 const ball = {
     x: paddle.x + paddle.w / 2, // canvas.width / 2,
     y: paddle.y - 20, // canvas.height / 2,
-    size: 10,
-    speed: howFast,
-    dx: howFast,
-    dy: -howFast
+    size: r * 2,
+    speed: 4, // original speed:  howFast,
+    dx: 4, // howFast,
+    dy: -4, // -howFast
 }
 
 // draw ball on canvas
@@ -150,8 +151,38 @@ function moveBall() {
     // ball & paddle collision
     if (ball.x - ball.size > paddle.x &&
         ball.x + ball.size < paddle.x + paddle.w &&
-        ball.y + ball.size > paddle.y) {
-        ball.dy = -ball.speed
+        ball.y + ball.size > paddle.y &&
+        ball.y === 572) {
+
+        // // angle of the shot
+        // // Calculate the point of contact on the paddle
+        // let paddleCenter = paddle.x + paddle.w / 2;
+        // let collisionPoint = ball.x - (paddleCenter - ball.size);
+
+        // // Normalize the collision point to a value between -4 and 4
+        // let normalizedCollisionPoint = (collisionPoint / (paddle.w / 2)) * 7;
+
+        // // Calculate the bounce angle based on the normalized collision point
+        // let bounceAngle = normalizedCollisionPoint * Math.PI / 4;
+
+        // // Calculate the new velocity components after the bounce
+        // // let speed = Math.sqrt(ball.velocityX ** 2 + ball.velocityY ** 2);
+        // let newVelocityX = ball.speed * Math.sin(bounceAngle);
+        // // let newVelocityY = -speed * Math.cos(bounceAngle);
+
+        // // Update the ball's velocity
+        // ball.dx = bounceAngle // newVelocityX;
+        // // ball.velocityY = newVelocityY;
+
+        // Math.abs gets rid of glitch when ball is caught on the side of the paddle
+        ball.dy = -Math.abs(ball.dy)
+
+        // // testing ball (tehe) 
+        // console.log('paddleCenter: ' + paddleCenter)
+        // // console.log('collisionPoint: ' + collisionPoint)
+        // // console.log('normalizedCollisionPoint: ' + normalizedCollisionPoint)
+        // console.log('bounceAngle: ' + bounceAngle)
+        // console.log('newVelocityX: ' + newVelocityX)
     }
 
     // Brick collision
@@ -159,48 +190,142 @@ function moveBall() {
         column.forEach(brick => {
             if (brick.visible) {
 
-                //  ball hits bottom of block
+                // BALL HITTING A FLAT SIDE OF THE BRICK
+                // ball hits bottom of brick
                 if (ball.x > brick.x &&
                     ball.x < brick.x + brick.w &&
-                    ball.y - ball.size === brick.y + brick.h) {
-                    ball.dy = -ball.dy
-                    brick.visible = false
-                    increaseScore()
+                    ball.y + (ball.size / 2) > brick.y &&
+                    ball.y - (ball.size / 2) < brick.y + brick.h) {
 
-                    // ball hits top of block
+                    ball.dy *= -1;
+                    brick.visible = false;
+                    increaseScore();
+
+                    // ball hits top of brick
                 } else if (ball.x > brick.x &&
                     ball.x < brick.x + brick.w &&
-                    ball.y + ball.size === brick.y) {
-                    ball.dy = -ball.dy
-                    brick.visible = false
+                    ball.y - (ball.size / 2) < brick.y + brick.h &&
+                    ball.y + (ball.size / 2) > brick.y) {
+
+                    ball.dy *= -1;
+                    brick.visible = false;
+                    increaseScore();
+
+                    // ball hits left side of brick
+                } else if (ball.y > brick.y &&
+                    ball.y < brick.y + brick.h &&
+                    ball.x + (ball.size / 2) > brick.x &&
+                    ball.x - (ball.size / 2) < brick.x + brick.w) {
+
+                    ball.dx *= -1
+                    brick.visible = false;
                     increaseScore()
 
-                    // ball hits left side of block
-                } else if (ball.x + ball.size > brick.x &&
-                    ball.x < brick.x &&
-                    ball.y > brick.y &&
-                    ball.y < brick.y + brick.h) {
-                    ball.dx = -ball.dx
-                    brick.visible = false
-                    increaseScore()
+                    // ball hits right side of brick
+                } else if (ball.y > brick.y &&
+                    ball.y < brick.y + brick.h &&
+                    ball.x - (ball.size / 2) < ball.x + ball.w &&
+                    ball.x > brick.x) {
 
-                    // ball hits right side of block
-                } else if (ball.x - ball.size < brick.x + brick.w &&
-                    ball.x > brick.x + brick.w &&
-                    ball.y > brick.y &&
-                    ball.y < brick.y + brick.h) {
-                    ball.dx = -ball.dx
-                    brick.visible = false
-                    increaseScore()
-                } else if (ball.x - ball.size > brick.x &&
-                    ball.x + ball.size < brick.x + brick.w &&
-                    ball.y + ball.size > brick.y &&
-                    ball.y - ball.size < brick.y + brick.h) {
-                    ball.dy = -ball.dy
-                    brick.visible = false
-
+                    ball.dx *= -1
+                    brick.visible = false;
                     increaseScore()
                 }
+
+                // BALL HITTING CORNER OF THE BRICK - need to add direction it is coming from
+                // Top Left corner
+                if (ball.x < brick.x &&
+                    ball.y < brick.y) {
+                    let a = brick.x - ball.x
+                    let b = brick.y - ball.y
+                    let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
+
+                    if (c < (ball.size / 2)) {
+                        console.log("Top Left Corner: " + c)
+
+                        if (ball.dx > 0 && ball.dy < 0) {
+                            ball.dx *= -1
+                        } else if (ball.dx < 0 && ball.dy > 0) {
+                            ball.dy *= -1
+                        } else {
+                            ball.dx *= -1
+                            ball.dy *= -1
+                        }
+
+                        brick.visible = false;
+                        increaseScore()
+                    }
+
+                    // Bottom Left Corner
+                } else if (ball.x < brick.x &&
+                    ball.y > brick.y + brick.h) {
+                    let a = brick.x - ball.x
+                    let b = ball.y - (brick.y + brick.h)
+                    let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
+
+                    if (c < ball.size / 2) {
+                        console.log("Bottom Left Corner: " + c)
+
+                        if (ball.dx < 0 && ball.dy < 0) {
+                            ball.dy *= -1
+                        } else if (ball.dx > 0 && ball.dy > 0) {
+                            ball.dx *= -1
+                        } else {
+                            ball.dx *= -1
+                            ball.dy *= -1
+                        }
+
+                        brick.visible = false;
+                        increaseScore()
+                    }
+
+                    // Top Right Corner
+                } else if (ball.x > brick.x + brick.w &&
+                    ball.y < brick.y) {
+                    let a = ball.x - (brick.x + brick.w)
+                    let b = brick.y - ball.y
+                    let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
+
+                    if (c < ball.size / 2) {
+                        console.log("Top Right Corner: " + c)
+
+                        if (ball.dx < 0 && ball.dy < 0) {
+                            ball.dx *= -1
+                        } else if (ball.dx > 0 && ball.dy > 0) {
+                            ball.dy *= -1
+                        } else {
+                            ball.dx *= -1
+                            ball.dy *= -1
+                        }
+
+                        brick.visible = false;
+                        increaseScore()
+                    }
+
+                    // Bottom Right Corner
+                } else if (ball.x > brick.x + brick.w &&
+                    ball.y > brick.y + brick.h) {
+                    let a = ball.x - (brick.x + brick.w)
+                    let b = ball.y - (brick.y + brick.h)
+                    let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
+
+                    if (c < ball.size / 2) {
+                        console.log("Bottom Right Corner: " + c)
+
+                        if (ball.dx < 0 && ball.dy > 0) {
+                            ball.dx *= -1
+                        } else if (ball.dx > 0 && ball.dy < 0) {
+                            ball.dy *= -1
+                        } else {
+                            ball.dx *= -1
+                            ball.dy *= -1
+                        }
+
+                        brick.visible = false;
+                        increaseScore()
+                    }
+                }
+
             }
         })
     })
