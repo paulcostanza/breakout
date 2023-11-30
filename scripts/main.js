@@ -46,8 +46,8 @@ export const paddle = {
 let howFast = 4
 let r = 5;
 const ball = {
-    x: paddle.x + paddle.w / 2, // canvas.width / 2,
-    y: paddle.y - 20, // canvas.height / 2,
+    x: paddle.x + paddle.w / 2,
+    y: paddle.y - 20,
     size: r * 2,
     speed: 4, // original speed:  howFast,
     dx: 4, // howFast,
@@ -153,6 +153,32 @@ function moveBall() {
         ball.x + ball.size < paddle.x + paddle.w &&
         ball.y + ball.size > paddle.y &&
         ball.y === 572) {
+
+        // The ball is given a new direction according to how far from the center of the paddle it collided. 
+        // If the ball hits the paddle right in the center, it is sent away exactly straight up; 
+        //if it hits right on the edge, it flies off at an extreme angle (75 degrees). 
+
+        // paddle.w == 80            
+        // relative middle of the paddle = -40, 0, 40
+
+        // let ballAndPaddleDistance = paddle.x - (paddle.w / 2) - ball.x
+        let distance = ball.x - paddle.x - (paddle.w / 2)
+
+        let relativeCenterOfPaddle = distance / (paddle.h / 2)
+        let bounceAngle = relativeCenterOfPaddle * 4
+
+        let ballDX = ball.speed * Math.cos(bounceAngle);
+
+        if (ball.x > paddle.x + (paddle.w / 2)) {
+            ball.dx = Math.abs(ballDX)
+        } else {
+            ball.dx = -Math.abs(ballDX)
+        }
+
+        console.log(ball.dx)
+        // middle of paddle - ball
+
+
 
         // // angle of the shot
         // // Calculate the point of contact on the paddle
