@@ -1,6 +1,7 @@
 import { keyDown, keyUp } from './components/moving.js'
 import { testing } from './components/test.js'
 import { toggleNameMenu, toggleRulesMenu, getUserName, addPlayerToScoreBoard, highScoreName, getUserInfo } from './components/menu.js'
+import { chooseBrick } from './components/powerUps.js'
 
 // functions that are imported
 testing()
@@ -26,11 +27,11 @@ const ctx = canvas.getContext('2d')
 let score = 0
 
 // Total lives
-let lives = 500 // orignial: 3
+let lives = 3
 
-// Bricks
+// Bricks, I some how got these backwards
 const brickRowCount = 9
-const brickColumnCount = 8
+const brickColumnCount = 10
 
 // create paddle properties
 export const paddle = {
@@ -50,7 +51,7 @@ const ball = {
     y: paddle.y - 20,
     size: r * 2,
     speed: 4, // original speed:  howFast,
-    dx: 4, // howFast,
+    dx: 0, // howFast,
     dy: -4, // -howFast
 }
 
@@ -84,6 +85,8 @@ for (let i = 0; i < brickRowCount; i++) {
         bricks[i][j] = { x, y, ...brickProp }
     }
 }
+
+// chooseBrick(bricks, brickRowCount, brickColumnCount)
 
 // draw paddle on canvas
 function drawPaddle() {
@@ -155,60 +158,27 @@ function moveBall() {
         ball.y === 572) {
 
         // The ball is given a new direction according to how far from the center of the paddle it collided. 
-        // If the ball hits the paddle right in the center, it is sent away exactly straight up; 
-        //if it hits right on the edge, it flies off at an extreme angle (75 degrees). 
+        // If the ball hits the paddle right in the center, it is sent straight up
+        // If it hits towards the edge, it flies off at an angle 
 
-        // paddle.w == 80            
-        // relative middle of the paddle = -40, 0, 40
-
-        // let ballAndPaddleDistance = paddle.x - (paddle.w / 2) - ball.x
         let distance = ball.x - paddle.x - (paddle.w / 2)
 
         let relativeCenterOfPaddle = distance / (paddle.h / 2)
         let bounceAngle = relativeCenterOfPaddle * 4
 
+        // ballDX represents the angle the ball will bounce off at
         let ballDX = ball.speed * Math.cos(bounceAngle);
 
+        // double checks which side of the paddle the ball strikes
+        // ball.dx is neg for left side, or pos for right side
         if (ball.x > paddle.x + (paddle.w / 2)) {
             ball.dx = Math.abs(ballDX)
         } else {
             ball.dx = -Math.abs(ballDX)
         }
 
-        console.log(ball.dx)
-        // middle of paddle - ball
-
-
-
-        // // angle of the shot
-        // // Calculate the point of contact on the paddle
-        // let paddleCenter = paddle.x + paddle.w / 2;
-        // let collisionPoint = ball.x - (paddleCenter - ball.size);
-
-        // // Normalize the collision point to a value between -4 and 4
-        // let normalizedCollisionPoint = (collisionPoint / (paddle.w / 2)) * 7;
-
-        // // Calculate the bounce angle based on the normalized collision point
-        // let bounceAngle = normalizedCollisionPoint * Math.PI / 4;
-
-        // // Calculate the new velocity components after the bounce
-        // // let speed = Math.sqrt(ball.velocityX ** 2 + ball.velocityY ** 2);
-        // let newVelocityX = ball.speed * Math.sin(bounceAngle);
-        // // let newVelocityY = -speed * Math.cos(bounceAngle);
-
-        // // Update the ball's velocity
-        // ball.dx = bounceAngle // newVelocityX;
-        // // ball.velocityY = newVelocityY;
-
-        // Math.abs gets rid of glitch when ball is caught on the side of the paddle
         ball.dy = -Math.abs(ball.dy)
 
-        // // testing ball (tehe) 
-        // console.log('paddleCenter: ' + paddleCenter)
-        // // console.log('collisionPoint: ' + collisionPoint)
-        // // console.log('normalizedCollisionPoint: ' + normalizedCollisionPoint)
-        // console.log('bounceAngle: ' + bounceAngle)
-        // console.log('newVelocityX: ' + newVelocityX)
     }
 
     // Brick collision
@@ -267,7 +237,7 @@ function moveBall() {
                     let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
 
                     if (c < (ball.size / 2)) {
-                        console.log("Top Left Corner: " + c)
+                        // console.log("Top Left Corner: " + c)
 
                         if (ball.dx > 0 && ball.dy < 0) {
                             ball.dx *= -1
@@ -290,7 +260,7 @@ function moveBall() {
                     let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
 
                     if (c < ball.size / 2) {
-                        console.log("Bottom Left Corner: " + c)
+                        // console.log("Bottom Left Corner: " + c)
 
                         if (ball.dx < 0 && ball.dy < 0) {
                             ball.dy *= -1
@@ -313,7 +283,7 @@ function moveBall() {
                     let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
 
                     if (c < ball.size / 2) {
-                        console.log("Top Right Corner: " + c)
+                        // console.log("Top Right Corner: " + c)
 
                         if (ball.dx < 0 && ball.dy < 0) {
                             ball.dx *= -1
@@ -336,7 +306,7 @@ function moveBall() {
                     let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
 
                     if (c < ball.size / 2) {
-                        console.log("Bottom Right Corner: " + c)
+                        // console.log("Bottom Right Corner: " + c)
 
                         if (ball.dx < 0 && ball.dy > 0) {
                             ball.dx *= -1
@@ -351,7 +321,6 @@ function moveBall() {
                         increaseScore()
                     }
                 }
-
             }
         })
     })
@@ -375,6 +344,7 @@ function moveBall() {
 function increaseScore() {
     score++
 
+    // detects if all the bricks have been cleared
     if (score % (brickRowCount * brickColumnCount) === 0) {
         showAllBricks()
         ball.x = paddle.x + paddle.w / 2
@@ -425,3 +395,4 @@ closeOptionsBtn.addEventListener('click', () => options.classList.remove('show')
 highScoreBtn.addEventListener('click', () => highScore.classList.add('show'))
 closeHighScoreBtn.addEventListener('click', () => highScore.classList.remove('show'))
 
+chooseBrick

@@ -1,8 +1,9 @@
 # breakout
 
 **To Do list**
+- Fix paddle corners collision with ball issue
+- Add power ups & power downs
 - figure out how to add different levels
-- add a pause button
 - add difficulty (easy or hard mode) to the options menu. 
 - edit user names to lowercase in the high score menu
 
