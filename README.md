@@ -7,7 +7,14 @@
 - add difficulty (easy or hard mode) to the options menu. 
 - edit user names to lowercase in the high score menu
 
-#### Nov 29th
+#### Jan 25th, 2024
+- Fixed rows and columns (got them switched somehow)
+- added the need to hit the bricks multiple times to crack. 
+
+#### Jan 24th
+It's been a minute! Glad to be back. Deleted a bunch of stuff that was not working. Let's try to add some stuff that does lmao.
+
+#### Nov 29th, 2023
 1. Fixed a major bug when the ball was hitting the corner of the brick. It now bounces off in a realistic angle. Before it would either bounce in a random direction or just go right through a brick. Took fours days of effort and research, but the game is MUCH better now. 
 
 2. You can now angle the bounce of the ball depending on where the ball makes contact with the paddle. 

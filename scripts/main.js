@@ -1,7 +1,7 @@
 import { keyDown, keyUp } from './components/moving.js'
 import { testing } from './components/test.js'
 import { toggleNameMenu, toggleRulesMenu, getUserName, addPlayerToScoreBoard, highScoreName, getUserInfo } from './components/menu.js'
-import { chooseBrick } from './components/powerUps.js'
+// import { chooseBrick } from './components/powerUps.js'
 
 // functions that are imported
 testing()
@@ -29,9 +29,9 @@ let score = 0
 // Total lives
 let lives = 3
 
-// Bricks, I some how got these backwards
-const brickRowCount = 9
-const brickColumnCount = 10
+// Bricks
+const brickRowCount = 10
+const brickColumnCount = 11
 
 // create paddle properties
 export const paddle = {
@@ -68,22 +68,27 @@ function drawBall() {
 const brickProp = {
     w: 70,
     h: 20,
-    padding: 10,
-    offsetX: 45,
+    padding: 5,
+
+    // offsets: border area where ball can travel around bricks
+    offsetX: 25,
     offsetY: 60,
-    visible: true
+    visible: true,
+    strength: 2
 }
 
 // create bricks
 const bricks = []
-for (let i = 0; i < brickRowCount; i++) {
+for (let i = 0; i < brickColumnCount; i++) {
     bricks[i] = [];
 
-    for (let j = 0; j < brickColumnCount; j++) {
-        const x = i * (brickProp.w + brickProp.padding) + brickProp.offsetX
-        const y = j * (brickProp.h + brickProp.padding) + brickProp.offsetY
+    for (let j = 0; j < brickRowCount; j++) {
+        const x = j * (brickProp.w + brickProp.padding) + brickProp.offsetX
+        const y = i * (brickProp.h + brickProp.padding) + brickProp.offsetY
         bricks[i][j] = { x, y, ...brickProp }
     }
+
+
 }
 
 // chooseBrick(bricks, brickRowCount, brickColumnCount)
@@ -115,7 +120,15 @@ function drawBricks() {
         column.forEach(brick => {
             ctx.beginPath()
             ctx.rect(brick.x, brick.y, brick.w, brick.h)
-            ctx.fillStyle = brick.visible ? '#0095dd' : 'transparent'
+
+            // determin opacity -> three different states
+            let op = 1.0
+            if (brick.strength == 2)
+                op = 1.0
+            else if (brick.strength == 1)
+                op = 0.5
+
+            ctx.fillStyle = brick.visible ? `rgb(0, 149, 221, ${op})` : 'transparent'
             ctx.fill()
             ctx.closePath()
         })
@@ -155,7 +168,8 @@ function moveBall() {
     if (ball.x - ball.size > paddle.x &&
         ball.x + ball.size < paddle.x + paddle.w &&
         ball.y + ball.size > paddle.y &&
-        ball.y === 572) {
+        ball.y === 572 &&
+        ball.speed > 0) {
 
         // The ball is given a new direction according to how far from the center of the paddle it collided. 
         // If the ball hits the paddle right in the center, it is sent straight up
@@ -194,8 +208,10 @@ function moveBall() {
                     ball.y - (ball.size / 2) < brick.y + brick.h) {
 
                     ball.dy *= -1;
-                    brick.visible = false;
-                    increaseScore();
+
+                    outOfStrength(brick)
+
+
 
                     // ball hits top of brick
                 } else if (ball.x > brick.x &&
@@ -204,8 +220,7 @@ function moveBall() {
                     ball.y + (ball.size / 2) > brick.y) {
 
                     ball.dy *= -1;
-                    brick.visible = false;
-                    increaseScore();
+                    outOfStrength(brick)
 
                     // ball hits left side of brick
                 } else if (ball.y > brick.y &&
@@ -214,8 +229,7 @@ function moveBall() {
                     ball.x - (ball.size / 2) < brick.x + brick.w) {
 
                     ball.dx *= -1
-                    brick.visible = false;
-                    increaseScore()
+                    outOfStrength(brick)
 
                     // ball hits right side of brick
                 } else if (ball.y > brick.y &&
@@ -224,8 +238,7 @@ function moveBall() {
                     ball.x > brick.x) {
 
                     ball.dx *= -1
-                    brick.visible = false;
-                    increaseScore()
+                    outOfStrength(brick)
                 }
 
                 // BALL HITTING CORNER OF THE BRICK - need to add direction it is coming from
@@ -248,8 +261,7 @@ function moveBall() {
                             ball.dy *= -1
                         }
 
-                        brick.visible = false;
-                        increaseScore()
+                        outOfStrength(brick)
                     }
 
                     // Bottom Left Corner
@@ -271,8 +283,7 @@ function moveBall() {
                             ball.dy *= -1
                         }
 
-                        brick.visible = false;
-                        increaseScore()
+                        outOfStrength(brick)
                     }
 
                     // Top Right Corner
@@ -294,8 +305,7 @@ function moveBall() {
                             ball.dy *= -1
                         }
 
-                        brick.visible = false;
-                        increaseScore()
+                        outOfStrength(brick)
                     }
 
                     // Bottom Right Corner
@@ -317,8 +327,7 @@ function moveBall() {
                             ball.dy *= -1
                         }
 
-                        brick.visible = false;
-                        increaseScore()
+                        outOfStrength(brick)
                     }
                 }
             }
@@ -340,8 +349,22 @@ function moveBall() {
     }
 }
 
+// deletes brick if out of strength
+function outOfStrength(brick) {
+
+    brick.strength = brick.strength - 1
+
+    console.log(brick.strength)
+
+    if (brick.strength == 0) {
+        brick.visible = false
+        increaseScore();
+    }
+}
+
 // increase score
 function increaseScore() {
+
     score++
 
     // detects if all the bricks have been cleared
@@ -357,6 +380,7 @@ function showAllBricks() {
     bricks.forEach(column => {
         column.forEach(brick => {
             brick.visible = true
+            brick.strength = 2
         })
     })
 }
@@ -395,4 +419,3 @@ closeOptionsBtn.addEventListener('click', () => options.classList.remove('show')
 highScoreBtn.addEventListener('click', () => highScore.classList.add('show'))
 closeHighScoreBtn.addEventListener('click', () => highScore.classList.remove('show'))
 
-chooseBrick
