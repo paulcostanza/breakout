@@ -1,6 +1,7 @@
 import { keyDown, keyUp } from './components/moving.js'
 import { testing } from './components/test.js'
 import { toggleNameMenu, toggleRulesMenu, getUserName, addPlayerToScoreBoard, highScoreName, getUserInfo } from './components/menu.js'
+import { Item } from './components/powerEffect.js'
 // import { chooseBrick } from './components/powerUps.js'
 
 // functions that are imported
@@ -44,15 +45,14 @@ export const paddle = {
 }
 
 // create ball properties
-let howFast = 4
-let r = 5;
-const ball = {
+export const ball = {
     x: paddle.x + paddle.w / 2,
     y: paddle.y - 20,
-    size: r * 2,
-    speed: 4, // original speed:  howFast,
-    dx: 0, // howFast,
-    dy: -4, // -howFast
+    radius: 5,
+    size: 5 * 2,
+    speed: 4,
+    dx: 0,
+    dy: 0,
 }
 
 // draw ball on canvas
@@ -68,10 +68,10 @@ function drawBall() {
 const brickProp = {
     w: 70,
     h: 20,
-    padding: 5,
+    padding: 1,
 
     // offsets: border area where ball can travel around bricks
-    offsetX: 25,
+    offsetX: 45,
     offsetY: 60,
     visible: true,
     strength: 2
@@ -87,17 +87,52 @@ for (let i = 0; i < brickColumnCount; i++) {
         const y = i * (brickProp.h + brickProp.padding) + brickProp.offsetY
         bricks[i][j] = { x, y, ...brickProp }
     }
-
-
 }
 
-// chooseBrick(bricks, brickRowCount, brickColumnCount)
+// choose bricks for power-ups
+let randomX
+let randomY
+do {
+    randomX = Math.floor(Math.random() * 11)
+    randomY = Math.floor(Math.random() * 10)
+} while (!bricks[randomX][randomY].visible)
+
+const powerUpProp = {
+    w: 20,
+    h: 20,
+    x: bricks[randomX][randomY].x + 25,
+    y: bricks[randomX][randomY].y,
+    dy: 3
+}
+
+function drawPowerUps() {
+    // adding power-ups
+    // highest we can go:  bricks[10][9]
+    new Item(bricks[randomX][randomY].x, bricks[randomX][randomY].y)
+
+    // check that brick has been destroyed
+    if (!(bricks[randomX][randomY].visible)) {
+
+        // Where the drop takes place
+        console.log("Launch!")
+        drawPowerUp()
+    }
+}
+
 
 // draw paddle on canvas
 function drawPaddle() {
     ctx.beginPath()
     ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h)
     ctx.fillStyle = '#0095dd'
+    ctx.fill()
+    ctx.closePath()
+}
+
+function drawPowerUp() {
+    ctx.beginPath()
+    ctx.rect(powerUpProp.x, powerUpProp.y, powerUpProp.w, powerUpProp.h)
+    ctx.fillStyle = '#019d2a'
     ctx.fill()
     ctx.closePath()
 }
@@ -151,6 +186,13 @@ function movePaddle() {
 
 // move ball on canvas
 function moveBall() {
+
+    // launches the ball with the space bar
+    if (ball.dy === 0) {
+        ball.x = paddle.x + paddle.w / 2
+        document.addEventListener('keydown', keyDown)
+    }
+
     ball.x += ball.dx
     ball.y += ball.dy
 
@@ -200,142 +242,15 @@ function moveBall() {
         column.forEach(brick => {
             if (brick.visible) {
 
-                // BALL HITTING A FLAT SIDE OF THE BRICK
-                // ball hits bottom of brick
-                if (ball.x > brick.x &&
-                    ball.x < brick.x + brick.w &&
-                    ball.y + (ball.size / 2) > brick.y &&
-                    ball.y - (ball.size / 2) < brick.y + brick.h) {
-
-                    ball.dy *= -1;
-
-                    outOfStrength(brick)
-
-
-
-                    // ball hits top of brick
-                } else if (ball.x > brick.x &&
-                    ball.x < brick.x + brick.w &&
-                    ball.y - (ball.size / 2) < brick.y + brick.h &&
-                    ball.y + (ball.size / 2) > brick.y) {
-
-                    ball.dy *= -1;
-                    outOfStrength(brick)
-
-                    // ball hits left side of brick
-                } else if (ball.y > brick.y &&
-                    ball.y < brick.y + brick.h &&
-                    ball.x + (ball.size / 2) > brick.x &&
-                    ball.x - (ball.size / 2) < brick.x + brick.w) {
-
-                    ball.dx *= -1
-                    outOfStrength(brick)
-
-                    // ball hits right side of brick
-                } else if (ball.y > brick.y &&
-                    ball.y < brick.y + brick.h &&
-                    ball.x - (ball.size / 2) < ball.x + ball.w &&
-                    ball.x > brick.x) {
-
-                    ball.dx *= -1
-                    outOfStrength(brick)
-                }
-
-                // BALL HITTING CORNER OF THE BRICK - need to add direction it is coming from
-                // Top Left corner
-                if (ball.x < brick.x &&
-                    ball.y < brick.y) {
-                    let a = brick.x - ball.x
-                    let b = brick.y - ball.y
-                    let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
-
-                    if (c < (ball.size / 2)) {
-                        // console.log("Top Left Corner: " + c)
-
-                        if (ball.dx > 0 && ball.dy < 0) {
-                            ball.dx *= -1
-                        } else if (ball.dx < 0 && ball.dy > 0) {
-                            ball.dy *= -1
-                        } else {
-                            ball.dx *= -1
-                            ball.dy *= -1
-                        }
-
-                        outOfStrength(brick)
-                    }
-
-                    // Bottom Left Corner
-                } else if (ball.x < brick.x &&
-                    ball.y > brick.y + brick.h) {
-                    let a = brick.x - ball.x
-                    let b = ball.y - (brick.y + brick.h)
-                    let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
-
-                    if (c < ball.size / 2) {
-                        // console.log("Bottom Left Corner: " + c)
-
-                        if (ball.dx < 0 && ball.dy < 0) {
-                            ball.dy *= -1
-                        } else if (ball.dx > 0 && ball.dy > 0) {
-                            ball.dx *= -1
-                        } else {
-                            ball.dx *= -1
-                            ball.dy *= -1
-                        }
-
-                        outOfStrength(brick)
-                    }
-
-                    // Top Right Corner
-                } else if (ball.x > brick.x + brick.w &&
-                    ball.y < brick.y) {
-                    let a = ball.x - (brick.x + brick.w)
-                    let b = brick.y - ball.y
-                    let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
-
-                    if (c < ball.size / 2) {
-                        // console.log("Top Right Corner: " + c)
-
-                        if (ball.dx < 0 && ball.dy < 0) {
-                            ball.dx *= -1
-                        } else if (ball.dx > 0 && ball.dy > 0) {
-                            ball.dy *= -1
-                        } else {
-                            ball.dx *= -1
-                            ball.dy *= -1
-                        }
-
-                        outOfStrength(brick)
-                    }
-
-                    // Bottom Right Corner
-                } else if (ball.x > brick.x + brick.w &&
-                    ball.y > brick.y + brick.h) {
-                    let a = ball.x - (brick.x + brick.w)
-                    let b = ball.y - (brick.y + brick.h)
-                    let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
-
-                    if (c < ball.size / 2) {
-                        // console.log("Bottom Right Corner: " + c)
-
-                        if (ball.dx < 0 && ball.dy > 0) {
-                            ball.dx *= -1
-                        } else if (ball.dx > 0 && ball.dy < 0) {
-                            ball.dy *= -1
-                        } else {
-                            ball.dx *= -1
-                            ball.dy *= -1
-                        }
-
-                        outOfStrength(brick)
-                    }
-                }
+                ballHitsBrick(brick, ball)
             }
         })
     })
 
     // When we hit the bottom wall
     if (ball.y + ball.size > canvas.height) {
+
+        resetBall()
 
         if (lives > 0) {
             lives--;
@@ -354,8 +269,6 @@ function outOfStrength(brick) {
 
     brick.strength = brick.strength - 1
 
-    console.log(brick.strength)
-
     if (brick.strength == 0) {
         brick.visible = false
         increaseScore();
@@ -369,9 +282,11 @@ function increaseScore() {
 
     // detects if all the bricks have been cleared
     if (score % (brickRowCount * brickColumnCount) === 0) {
+        resetBall()
         showAllBricks()
         ball.x = paddle.x + paddle.w / 2
         ball.y = paddle.y - 20
+
     }
 }
 
@@ -393,12 +308,15 @@ function draw() {
     drawScore()
     drawLives()
     drawBricks()
+    drawPowerUps()
 }
 
 // update canvas drawing and animation
 function update() {
     movePaddle()
     moveBall()
+    // movePowerUp()
+
 
     // draw everything
     draw()
@@ -418,4 +336,71 @@ closeOptionsBtn.addEventListener('click', () => options.classList.remove('show')
 
 highScoreBtn.addEventListener('click', () => highScore.classList.add('show'))
 closeHighScoreBtn.addEventListener('click', () => highScore.classList.remove('show'))
+
+
+function resetBall() {
+    ball.dy = 0
+    ball.dx = 0
+
+    // while ball is not in play, how do I keep this going
+    ball.x = paddle.x + paddle.w / 2
+    ball.y = paddle.y - 20
+}
+
+// want to move this into its own file
+function ballHitsBrick(brick, ball) {
+    // BALL HITTING A FLAT SIDE OF THE BRICK
+    // ball hits bottom of brick
+    if (ball.x > brick.x &&
+        ball.x < brick.x + brick.w &&
+        ball.y + (ball.size / 2) > brick.y &&
+        ball.y - (ball.size / 2) < brick.y + brick.h) {
+
+        ball.dy *= -1;
+
+        outOfStrength(brick)
+
+
+
+
+        // ball hits top of brick
+    } else if (ball.x > brick.x &&
+        ball.x < brick.x + brick.w &&
+        ball.y - (ball.size / 2) < brick.y + brick.h &&
+        ball.y + (ball.size / 2) > brick.y) {
+
+        ball.dy *= -1;
+        outOfStrength(brick)
+
+
+        // ball hits left side of brick
+    } else if (ball.y > brick.y &&
+        ball.y < brick.y + brick.h &&
+        ball.x + (ball.size / 2) > brick.x &&
+        ball.x - (ball.size / 2) < brick.x + brick.w) {
+
+        ball.dx *= -1
+        outOfStrength(brick)
+
+
+        // ball hits right side of brick
+    } else if (ball.y > brick.y &&
+        ball.y < brick.y + brick.h &&
+        ball.x - (ball.size / 2) < ball.x + ball.w &&
+        ball.x > brick.x) {
+
+        ball.dx *= -1
+        outOfStrength(brick)
+
+
+    }
+
+    // BALL HITTING CORNER OF THE BRICK - need to add direction it is coming from
+    // Top Left corner
+
+
+
+    // Bottom Right Corner
+
+}
 

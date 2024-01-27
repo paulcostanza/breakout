@@ -7,7 +7,10 @@
 - add difficulty (easy or hard mode) to the options menu. 
 - edit user names to lowercase in the high score menu
 
-#### Jan 25th, 2024
+#### Jan 26th, 2024
+Added a 'shoot the ball' feature. No longer continuous (although I will add the option later on in the menu), you can now use the space bar to fire the ball. 
+
+#### Jan 25th
 - Fixed rows and columns (got them switched somehow)
 - added the need to hit the bricks multiple times to crack. 
 
@@ -23,7 +26,7 @@ It's been a minute! Glad to be back. Deleted a bunch of stuff that was not worki
 Made the high score menu more readable by changing everyother score's background to #222 as opposed to the background-color of the menu at #333. Creates a nice subtle touch. 
 
 #### Nov 24th
-Change where the ball starts. 
+Changed where the ball starts. 
 
 #### Nov 23rd
 Added a high score menu that saves user name and score in local storage. 

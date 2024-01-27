@@ -1,5 +1,5 @@
 // all keyboard actions are stored here
-import { paddle } from '../main.js'
+import { paddle, ball } from '../main.js'
 
 // keydown event
 export function keyDown(e) {
@@ -7,6 +7,10 @@ export function keyDown(e) {
         paddle.dx = paddle.speed;
     } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
         paddle.dx = -paddle.speed;
+    }
+
+    if (e.key === " ") {
+        ball.dy = -ball.speed
     }
 }
 

@@ -15,6 +15,7 @@ Add hamberger icon. When accessed it will pause the game. When you exit the menu
     - toggle music
     - toggle sound effects
     - add Day/Night view
+    - have ball reset after every life loss of continuous mode
 - High Score:
     - limit top 10 high score
     - If the user name is long it screws up the high score look.
